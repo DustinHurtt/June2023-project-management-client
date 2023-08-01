@@ -3,11 +3,10 @@
 import { useParams, useNavigate } from "react-router-dom"; 
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 
-import { API_URL } from "../services/API_URL";
+import { get, axiosDelete, put } from "../services/authService";
 
-function EditProjectPage(props) {
+function EditProjectPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -15,8 +14,7 @@ function EditProjectPage(props) {
   const navigate = useNavigate(); 
 
   useEffect(() => {                                  // <== ADD
-    axios
-      .get(`${API_URL}/projects/project-details/${projectId}`)
+    get(`/projects/project-details/${projectId}`)
       .then((response) => {
         /* 
           We update the state with the project data coming from the response.
@@ -36,8 +34,7 @@ function EditProjectPage(props) {
     const requestBody = { title, description };
  
     // Make a PUT request to update the project
-    axios
-      .put(`${API_URL}/projects/project-update/${projectId}`, requestBody)
+    put(`/projects/project-update/${projectId}`, requestBody)
       .then((response) => {
         console.log("Updated", response.data)
         // Once the request is resolved successfully and the project
@@ -48,8 +45,7 @@ function EditProjectPage(props) {
 
   const deleteProject = () => {                    //  <== ADD
     // Make a DELETE request to delete the project
-    axios
-      .delete(`${API_URL}/projects/project-delete/${projectId}`)
+    axiosDelete(`/projects/project-delete/${projectId}`)
       .then(() => {
         // Once the delete request is resolved successfully
         // navigate back to the list of projects.

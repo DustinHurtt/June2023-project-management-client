@@ -1,9 +1,8 @@
 // src/components/AddProject.jsx
 
 import { useState } from "react";
-import axios from "axios";
 
-import { API_URL } from "../services/API_URL";
+import { post } from "../services/authService";
 
 function AddProject({ refreshProjects, setProjects, projects }) {
   const [title, setTitle] = useState("");
@@ -13,8 +12,7 @@ function AddProject({ refreshProjects, setProjects, projects }) {
     e.preventDefault();
  
     const requestBody = { title, description };
-    axios
-      .post(`${API_URL}/projects`, requestBody)
+    post('/projects', requestBody)
       .then((response) => {
         console.log("Created project =======>", response.data)
         // Reset the state

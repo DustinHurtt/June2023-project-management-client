@@ -6,13 +6,17 @@ function Navbar() {
 
     const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
+    const getToken = () => {
+        return localStorage.getItem('authToken')
+      }
+
   return (
     <nav>
       <Link to="/">
         <button>Home</button>
       </Link>
  
-      {isLoggedIn && (
+      {getToken() && (
         <>
           <Link to="/projects">
             <button>Projects</button>
@@ -22,7 +26,7 @@ function Navbar() {
         </>
       )}
  
-      {!isLoggedIn && (
+      {!getToken() && (
         <>
           <Link to="/signup"> <button>Sign Up</button> </Link>
           <Link to="/login"> <button>Login</button> </Link>

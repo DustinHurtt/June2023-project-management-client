@@ -2,8 +2,8 @@
 
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { API_URL } from "../services/API_URL";
+
+import { get } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -18,6 +18,11 @@ function AuthProviderWrapper({ children }) {
     localStorage.setItem('authToken', token);
   }
 
+  const removeToken = () => {                    // <== ADD
+    // Upon logout, remove the token from the localStorage
+    localStorage.removeItem("authToken");
+  }
+
   const authenticateUser = () => {           //  <==  ADD  
     // Get the stored token from the localStorage
     const storedToken = localStorage.getItem('authToken');
@@ -25,10 +30,7 @@ function AuthProviderWrapper({ children }) {
     // If the token exists in the localStorage
     if (storedToken) {
       // We must send the JWT token in the request's "Authorization" Headers
-      axios.get(
-        `${API_URL}/auth/verify`, 
-        { headers: { Authorization: `Bearer ${storedToken}`} }
-      )
+    get('/auth/verify')
       .then((response) => {
         // If the server verifies that the JWT token is valid  
         const user = response.data;
@@ -39,7 +41,8 @@ function AuthProviderWrapper({ children }) {
       })
       .catch((error) => {
         // If the server sends an error response (invalid token) 
-        // Update state variables         
+        // Update state variables  
+        removeToken();       
         setIsLoggedIn(false);
         setIsLoading(false);
         setUser(null);        
@@ -51,13 +54,7 @@ function AuthProviderWrapper({ children }) {
         setUser(null);      
     }   
   }
-
-  const removeToken = () => {                    // <== ADD
-    // Upon logout, remove the token from the localStorage
-    localStorage.removeItem("authToken");
-  }
- 
- 
+  
   const logOutUser = () => {                   // <== ADD    
     // To log out the user, remove the token
     removeToken();

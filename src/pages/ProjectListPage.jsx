@@ -1,10 +1,10 @@
 // src/pages/ProjectListPage.jsx
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import { Link } from "react-router-dom";
 
-import { API_URL } from "../services/API_URL";
+import { get } from "../services/authService";
 
 import AddProject from "../components/AddProject";
 import ProjectCard from "../components/ProjectCard";
@@ -17,8 +17,7 @@ function ProjectListPage() {
   const [projects, setProjects] = useState([]);
 
   const getAllProjects = () => {
-    axios
-      .get(`${API_URL}/projects`)
+    get('/projects')
       .then((response) => {
         console.log("All Projects", response.data)
         setProjects(response.data)

@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
-import { API_URL } from "../services/API_URL";
+import { post } from "../services/authService";
 
 
 function SignupPage() {
@@ -29,7 +28,7 @@ function SignupPage() {
     // Make an axios request to the API
     // If the POST request is a successful redirect to the login page
     // If the request resolves with an error, set the error message in the state
-    axios.post(`${API_URL}/auth/signup`, requestBody)
+    post('/auth/signup', requestBody)
       .then((response) => {
         console.log("New User", response.data)
         navigate('/login');

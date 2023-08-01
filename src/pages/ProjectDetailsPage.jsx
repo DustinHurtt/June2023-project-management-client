@@ -1,12 +1,11 @@
 // src/pages/ProjectDetailsPage.jsx
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
-import { API_URL } from "../services/API_URL";
 import AddTask from "../components/AddTask";
 import TaskCard from "../components/TaskCard";
+import { get } from "../services/authService";
 
 
 function ProjectDetailsPage (props) {
@@ -15,8 +14,7 @@ function ProjectDetailsPage (props) {
   const { projectId } = useParams();
 
   const getProject = () => {          //  <== ADD A NEW FUNCTION
-    axios
-      .get(`${API_URL}/projects/project-details/${projectId}`)
+    get(`/projects/project-details/${projectId}`)
       .then((response) => {
         const oneProject = response.data;
         setProject(oneProject);
